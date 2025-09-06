@@ -10,31 +10,17 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SignupRouteImport } from './routes/signup'
-import { Route as ProfileRouteImport } from './routes/profile'
-import { Route as PostRouteImport } from './routes/post'
-import { Route as MyphotosRouteImport } from './routes/myphotos'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as ErrorRouteImport } from './routes/error'
-import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
+import { Route as AuthenticatedIndexRouteImport } from './routes/_authenticated/index'
+import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
+import { Route as AuthenticatedPostRouteImport } from './routes/_authenticated/post'
+import { Route as AuthenticatedMyphotosRouteImport } from './routes/_authenticated/myphotos'
 
 const SignupRoute = SignupRouteImport.update({
   id: '/signup',
   path: '/signup',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ProfileRoute = ProfileRouteImport.update({
-  id: '/profile',
-  path: '/profile',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PostRoute = PostRouteImport.update({
-  id: '/post',
-  path: '/post',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const MyphotosRoute = MyphotosRouteImport.update({
-  id: '/myphotos',
-  path: '/myphotos',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoginRoute = LoginRouteImport.update({
@@ -47,70 +33,88 @@ const ErrorRoute = ErrorRouteImport.update({
   path: '/error',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
+const AuthenticatedRoute = AuthenticatedRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedIndexRoute = AuthenticatedIndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedProfileRoute = AuthenticatedProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedPostRoute = AuthenticatedPostRouteImport.update({
+  id: '/post',
+  path: '/post',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedMyphotosRoute = AuthenticatedMyphotosRouteImport.update({
+  id: '/myphotos',
+  path: '/myphotos',
+  getParentRoute: () => AuthenticatedRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
   '/error': typeof ErrorRoute
   '/login': typeof LoginRoute
-  '/myphotos': typeof MyphotosRoute
-  '/post': typeof PostRoute
-  '/profile': typeof ProfileRoute
   '/signup': typeof SignupRoute
+  '/myphotos': typeof AuthenticatedMyphotosRoute
+  '/post': typeof AuthenticatedPostRoute
+  '/profile': typeof AuthenticatedProfileRoute
+  '/': typeof AuthenticatedIndexRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
   '/error': typeof ErrorRoute
   '/login': typeof LoginRoute
-  '/myphotos': typeof MyphotosRoute
-  '/post': typeof PostRoute
-  '/profile': typeof ProfileRoute
   '/signup': typeof SignupRoute
+  '/myphotos': typeof AuthenticatedMyphotosRoute
+  '/post': typeof AuthenticatedPostRoute
+  '/profile': typeof AuthenticatedProfileRoute
+  '/': typeof AuthenticatedIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/error': typeof ErrorRoute
   '/login': typeof LoginRoute
-  '/myphotos': typeof MyphotosRoute
-  '/post': typeof PostRoute
-  '/profile': typeof ProfileRoute
   '/signup': typeof SignupRoute
+  '/_authenticated/myphotos': typeof AuthenticatedMyphotosRoute
+  '/_authenticated/post': typeof AuthenticatedPostRoute
+  '/_authenticated/profile': typeof AuthenticatedProfileRoute
+  '/_authenticated/': typeof AuthenticatedIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    | '/'
     | '/error'
     | '/login'
+    | '/signup'
     | '/myphotos'
     | '/post'
     | '/profile'
-    | '/signup'
+    | '/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/error' | '/login' | '/myphotos' | '/post' | '/profile' | '/signup'
+  to: '/error' | '/login' | '/signup' | '/myphotos' | '/post' | '/profile' | '/'
   id:
     | '__root__'
-    | '/'
+    | '/_authenticated'
     | '/error'
     | '/login'
-    | '/myphotos'
-    | '/post'
-    | '/profile'
     | '/signup'
+    | '/_authenticated/myphotos'
+    | '/_authenticated/post'
+    | '/_authenticated/profile'
+    | '/_authenticated/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
+  AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
   ErrorRoute: typeof ErrorRoute
   LoginRoute: typeof LoginRoute
-  MyphotosRoute: typeof MyphotosRoute
-  PostRoute: typeof PostRoute
-  ProfileRoute: typeof ProfileRoute
   SignupRoute: typeof SignupRoute
 }
 
@@ -121,27 +125,6 @@ declare module '@tanstack/react-router' {
       path: '/signup'
       fullPath: '/signup'
       preLoaderRoute: typeof SignupRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/profile': {
-      id: '/profile'
-      path: '/profile'
-      fullPath: '/profile'
-      preLoaderRoute: typeof ProfileRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/post': {
-      id: '/post'
-      path: '/post'
-      fullPath: '/post'
-      preLoaderRoute: typeof PostRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/myphotos': {
-      id: '/myphotos'
-      path: '/myphotos'
-      fullPath: '/myphotos'
-      preLoaderRoute: typeof MyphotosRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/login': {
@@ -158,23 +141,66 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ErrorRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof AuthenticatedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/': {
+      id: '/_authenticated/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AuthenticatedIndexRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/profile': {
+      id: '/_authenticated/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof AuthenticatedProfileRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/post': {
+      id: '/_authenticated/post'
+      path: '/post'
+      fullPath: '/post'
+      preLoaderRoute: typeof AuthenticatedPostRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/myphotos': {
+      id: '/_authenticated/myphotos'
+      path: '/myphotos'
+      fullPath: '/myphotos'
+      preLoaderRoute: typeof AuthenticatedMyphotosRouteImport
+      parentRoute: typeof AuthenticatedRoute
     }
   }
 }
 
+interface AuthenticatedRouteChildren {
+  AuthenticatedMyphotosRoute: typeof AuthenticatedMyphotosRoute
+  AuthenticatedPostRoute: typeof AuthenticatedPostRoute
+  AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
+  AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
+}
+
+const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
+  AuthenticatedMyphotosRoute: AuthenticatedMyphotosRoute,
+  AuthenticatedPostRoute: AuthenticatedPostRoute,
+  AuthenticatedProfileRoute: AuthenticatedProfileRoute,
+  AuthenticatedIndexRoute: AuthenticatedIndexRoute,
+}
+
+const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
+  AuthenticatedRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
+  AuthenticatedRoute: AuthenticatedRouteWithChildren,
   ErrorRoute: ErrorRoute,
   LoginRoute: LoginRoute,
-  MyphotosRoute: MyphotosRoute,
-  PostRoute: PostRoute,
-  ProfileRoute: ProfileRoute,
   SignupRoute: SignupRoute,
 }
 export const routeTree = rootRouteImport

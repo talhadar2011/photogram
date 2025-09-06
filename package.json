@@ -9,7 +9,6 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "codegen": "tanstack router codegen"
-
   },
   "dependencies": {
     "@popperjs/core": "^2.11.8",
@@ -17,6 +16,7 @@
     "@tanstack/react-router": "^1.131.35",
     "@tanstack/react-router-devtools": "^1.131.35",
     "bootstrap": "^5.3.8",
+    "flowbite": "^3.1.2",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "tailwindcss": "^4.1.12"
